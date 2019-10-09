@@ -1,0 +1,104 @@
+ 
+<odoo>
+  <data>
+      
+    <record model="ir.ui.view" id="payment_quota_tree">
+      <field name="name">Payment Quota</field>
+      <field name="model">payment.quota</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="partner_id"/>
+          <field name="contract_id"/>
+          <field name="property_id"/>
+          <field name="amount"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="payment_quota_form">
+      <field name="name">Payment Quota</field>
+      <field name="model">payment.quota</field>
+      <field name="arch" type="xml">
+        <form>
+            <header>
+                
+                <button name="action_done" states='draft' type='object' string='Validar' />
+                <button name="action_cancel" states='done' type='object' string='Cancelar'/>
+                <button name="action_to_draft" states='cancel' type='object' string='Cambiar a Borrador'/>
+                
+                <field name="state" widget='statusbar' />
+            </header>
+                
+          <group>
+            <group>
+                <h4 attrs="{'invisible':[('currency_id', '=', False)]}" colspan='2'>
+                    <strong>Las cuotas estan en <field name="currency_id"/></strong>
+                </h4>
+                <field name="partner_id"/>
+                <field name="contract_id" 
+                       domain="[('partner_id', '=', partner_id), ('state','=', 'validate')]"
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                <field name="property_id" readonly="1"/>
+
+            </group>
+            <group>
+                <field name="date" required="1"/>
+                <field name="monto_divisa" required="1"/>
+                <field name="currency_payment_id" required="1" 
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                <field name="tasa" required="1" />
+                <field name="journal_id" required="1" domain="[('type', 'in', ('cash', 'bank'))]" 
+                       options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+
+                <field name="forma_pago" required="1"/>
+
+                <separator/>
+                <field name="amount"/>
+                <field name="monto_letra" invisible="1"/>
+                <field name="payment_id" attrs="{'invisible': [('payment_id', '=', False)]}"/>
+
+            </group>
+          </group>
+      
+          
+          <notebook>
+            <page string="Distribucion">
+              <group colspan="4">
+
+                <field name="quota_ids" nolabel="1" readonly="1">
+                  <tree editable="bottom">
+                    <field name="pago_id" invisible="1"/>
+                    <field name="quota_id" readonly="1"/>
+                    <field name="date_due" readonly="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="amount" sum="Total Quota"/>
+                    <field name="amount_paid" readonly="1"/>
+                    <field name="residual" readonly="1"/>
+                    <field name="to_pay" sum="Total a pagar"/>
+                    <field name="note"/>
+                  </tree>
+                </field>
+              </group>
+
+            </page>
+          </notebook>
+
+        </form>
+      </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="payment_quota_action_window">
+      <field name="name">Pagos</field>
+      <field name="res_model">payment.quota</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Pagos" id="menu_pagos" parent="real_estate.menu_real_estate"
+              action="payment_quota_action_window" sequence="10"/>
+
+
+
+  </data>
+</odoo>

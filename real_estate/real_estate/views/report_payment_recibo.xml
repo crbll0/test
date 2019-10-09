@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="paperformat_mediahoja" model="report.paperformat">
+        <field name="name">Media Hoja</field>
+<!--         <field name="default" eval="True"/> -->
+        <field name="format">custom</field>
+        <field name="page_height">139</field>
+        <field name="page_width">279</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">80</field>
+    </record>
+    
+    <report
+        id="payment_recibo_report"
+        model="payment.quota"
+        string="Recibo Cuotas"
+        report_type="qweb-pdf"
+        name="real_estate.payment_recibo"
+        file="real_estate.payment_recibo"
+        paperformat="real_estate.paperformat_mediahoja"
+        />
+    
+    <template id="payment_recibo">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page" style="font-size:18px;">
+                        <div class="footer"/>
+                        
+                        
+                        <h2 class="text-center">Recibo de Pago.</h2>
+                        
+                        <table class="table table-sm mt32">
+                            <tr>
+                                <td colspan="2">
+                                    <b>Cliente:</b>
+                                    <!--</td>-->
+                                    <!--<td class="text-left">-->
+                                    <span t-field="o.contract_id.partner_id"/>
+                                </td>
+                                <td>
+                                    <b>Fecha:</b>
+                                </td>
+                                <td>
+                                    <span t-field="o.date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!--<td/>-->
+                                <td colspan="2">
+                                    <table class="table table-sm table-condensed">
+                                        <tr>
+                                            <td>
+                                                <b>Edf.</b>
+                                                <t t-esc="o.contract_id.property_id.edificio"/>
+                                                
+                                            </td>
+                                            <td>
+                                                <b>Apto.</b>
+                                                <t t-esc="o.contract_id.property_id.apto"/>
+                                                
+                                            </td>
+                                            <td>
+                                                <b>Mts.</b>
+                                                <t t-esc="o.contract_id.property_id.mt2"/>
+                                                
+                                            </td>
+                                            <td>
+                                                <b>Proyecto.</b>
+                                                <t t-esc="o.contract_id.property_id.project_id.name"/>
+                                                
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <b>Moneda:</b>
+                                </td>
+                                <td>
+                                    <span t-field="o.currency_id"/>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="2">
+                                    <p>
+                                        <b>La suma de:</b>
+                                        <t t-esc="o.amount_word(o.amount)"/>
+                                    </p>
+                                </td>
+                                <td >
+                                    <span>
+                                        <span t-field="o.currency_id.symbol"/>
+                                        <span t-esc="'{:,.2f}'.format(o.amount)"/>
+                                    </span>
+                                </td>
+                                <td t-if="o.tasa > 1">
+                                    <span>
+                                        <strong>Tasa:</strong>
+                                        <span t-field="o.tasa"/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
+                        <table class="table table-sm ">
+                            <thead>
+                                <tr>
+                                    <th>Cuota/Descripcion</th>
+                                    <th class="text-right">Monto Pagado</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr t-foreach="o.quota_ids" t-as="c">
+                                    <td>
+                                        <span t-esc="c.quota_id.name"/>
+                                    </td>
+                                    
+                                    <td class="text-right">
+                                        <span t-esc="'{:,.2f}'.format(c.to_pay)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <b>Total</b>
+                                    </td>
+                                    <td class="text-right"
+                                        sstyle="border-width:5px;border-top-style:double;">
+                                        <span t-esc="'{:,.2f}'.format(o.amount)"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <br/>
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <table class="">
+                                    <tr class="text-center">
+                                        <td class="pr-4">_______________________________</td>
+                                        <td>_______________________________</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td class="pr-4">Entregado por</td>
+                                        <td>Recibido por</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+</odoo>

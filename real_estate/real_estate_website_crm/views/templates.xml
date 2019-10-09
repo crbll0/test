@@ -1,0 +1,278 @@
+<odoo>
+    <data>
+        <!-- Page -->
+        <template id="index" name="Properties">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 offset-3">
+                                <!--                                <t t-call="website.pager"/>-->
+                            </div>
+                        </div>
+                        <div class="row mt32 mb32">
+                            <div class="col-lg-9" id="middle_column">
+                                <div class="text-center text-muted" t-if="not properties">
+                                    <h1>No Property found</h1>
+                                    <p groups="event.group_event_manager">Use the top menu <i>
+                                        'Content'
+                                    </i> to create your first Property.
+                                    </p>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li t-foreach="properties" t-as="property"
+                                        t-attf-class="media#{' mt-3' if property_index else ''}">
+                                        <div class="media-body">
+                                            <h4>
+                                                <a t-attf-href="/property/#{ slug(property) }">
+                                                    <span t-field="property.name"></span>
+                                                </a>
+                                                <small t-if="not property.website_published"
+                                                       class="badge badge-danger">
+                                                    unpublished
+                                                </small>
+                                            </h4>
+                                            <div>
+                                                <p>
+                                                    <span t-if="property.website_description"
+                                                          t-esc="property.website_description[:35] + '...'"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 oe_structure" id="right_column">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 offset-3">
+                                <!--                                <t t-call="website.pager"/>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="property_page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="oe_structure"/>
+                    <div id="website_published_button" class="float-right"
+                         groups="base.group_website_publisher">
+                        <t t-call="website.publish_management">
+                            <t t-set="object" t-value="property"/>
+<!--                            <t t-set="publish_edit" t-value="True"/>-->
+                            <!--               <t t-set="action" t-value="'property.blog_post_action'"/> -->
+                        </t>
+                    </div>
+                    <section class="pt32 pb32">
+                        <div class="container">
+                            <div class="row s_nb_column_fixed">
+                                <div class="col-lg-12 s_title pt16"
+                                     style="text-align: center;">
+                                    <h1 class="s_title_default">
+                                        <font style="font-size: 62px;"
+                                              class="o_default_snippet_text">
+                                            <span t-field="property.name"/>
+                                        </font>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10 offset-lg-1">
+                                    <table class="table table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font-weight-bold">Direccion
+                                                </td>
+                                                <td colspan="3">
+                                                    <span t-field='property.street'/>
+                                                    <span t-field='property.street2'/>,
+                                                    <span t-field='property.city'/>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Type</td>
+                                                <td>
+                                                    <span t-field='property.property_type.name'/>
+                                                </td>
+
+                                                <td class="font-weight-bold">Building</td>
+                                                <td><span t-field='property.mt2'/>mt2
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Number of
+                                                    Rooms
+                                                </td>
+                                                <td>
+                                                    <span t-field='property.rooms'/>
+                                                </td>
+
+                                                <td class="font-weight-bold">Floor/Level
+                                                </td>
+                                                <td>
+                                                    <span t-field='property.floor'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Number of
+                                                    Bathrooms
+                                                </td>
+                                                <td>
+                                                    <span t-field='property.bathrooms'/>
+                                                </td>
+
+                                                <td class="font-weight-bold">Number of
+                                                    Parking
+                                                </td>
+                                                <td>
+                                                    <span t-field='property.parking'/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Value</td>
+                                                <td colspan="3">
+                                                    <span t-field='property.amount'/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="oe_structure"/>
+                    <section class="s_text_block pt32 pb32">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-10 offset-lg-1 pt32 pb32">
+                                    <p class="o_default_snippet_text">
+                                        <b class="o_default_snippet_text">Mod Cons:</b>
+                                        <t t-foreach="property.mod_cons_ids" t-as="mod">
+                                            <span class="badge badge-secondary"
+                                                  t-esc="mod.name"/>
+                                        </t>
+                                    </p>
+                                    <p class="lead o_default_snippet_text"
+                                       t-raw="property.website_description"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="s_call_to_action pt48 pb24 bg-200 oe_custom_bg">
+                        <div class="container">
+                            <div class="row">
+                                <div class="s_btn pb24 text-center col-lg-12 pt4">
+                                    <a t-att-href="/property/details/#{property.id}"
+                                       class="btn btn-primary btn-lg"
+                                       data-original-title="" title=""
+                                       aria-describedby="tooltip364685">
+                                        <span data-original-title="" title=""
+                                              aria-describedby="tooltip587875">Para mas
+                                            informacion
+                                        </span>
+                                        <i class="fa fa-1x fa-fw fa-arrow-circle-right ml-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+
+        <template id="contact">
+            <t t-call="website.layout">
+                <t t-set="additional_title">Apply to Property</t>
+
+                <div id="wrap" class="container">
+                    <h1 class="text-center mt-2">
+                        Contact Form
+                    </h1>
+                    <h2 t-if="property" class="text-center text-muted">
+                        <span t-field="property.name"/>
+                    </h2>
+
+                    <div class="row mt-3">
+                        <section id="forms" class="col">
+                            <form action="/website_form/" method="post"
+                                  class="s_website_form" enctype="multipart/form-data"
+                                  data-model_name="crm.lead"
+                                  data-success_page="/properties">
+
+                                <div class="form-group row form-field o_website_form_required_custom">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="partner_name">
+                                            Your Name
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text"
+                                               class="form-control o_website_form_input"
+                                               name="partner_name" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required_custom">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="email_from">
+                                            Your Email
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="email"
+                                               class="form-control o_website_form_input"
+                                               name="email_from" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field o_website_form_required_custom">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="partner_phone">
+                                            Your Phone Number
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <input type="text"
+                                               class="form-control o_website_form_input"
+                                               name="partner_phone" required=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group row form-field">
+                                    <div class="col-lg-3 col-md-4 text-right">
+                                        <label class="col-form-label" for="description">
+                                            Short Introduction
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-8">
+                                        <textarea
+                                                class="form-control o_website_form_input"
+                                                name="description"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                        <a href="#" role="button"
+                                           class="btn btn-primary btn-lg o_website_form_send">
+                                            Submit
+                                        </a>
+                                        <span id="o_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

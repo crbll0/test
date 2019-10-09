@@ -1,0 +1,8 @@
+<odoo>
+  <data>
+    <record id="product_quota" model="product.template">
+      <field name="name">Quota</field>
+      <field name="type">service</field>
+    </record>
+  </data>
+</odoo>

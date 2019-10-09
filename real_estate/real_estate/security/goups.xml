@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="base.module_category_real_estate" model="ir.module.category">
+      <field name="name">Real Estate</field>
+      <field name="sequence">14</field>
+    </record>
+
+    <record id="group_real_estate_user" model="res.groups">
+      <field name="name">Usuario</field>
+      <field name="category_id" ref="base.module_category_real_estate"/>
+      <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+      <field name="comment">No puede Confirmar Ni cancelar los contratos de propiedades.
+      </field>
+    </record>
+
+    <record id="group_real_estate_manager" model="res.groups">
+      <field name="name">Manager</field>
+      <field name="category_id" ref="base.module_category_real_estate"/>
+      <field name="implied_ids" eval="[(4, ref('group_real_estate_user'))]"/>
+      <field name="users" eval="[(4, ref('base.user_root'))]"/>
+      <field name="comment">Puede Confirmar y Cancelar los contratos de propiedades.
+      </field>
+    </record>
+
+
+    <!--<record model="ir.rule" id="worksheet_mrp_comp_rule">-->
+      <!--<field name="name">Worksheet MRP multi-company</field>-->
+      <!--<field name="model_id" ref="model_worksheet_mrp"/>-->
+      <!--<field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>-->
+    <!--</record>-->
+    <!--<record model="ir.rule" id="personal_worksheet_rule">-->
+      <!--<field name="name">Personal Worksheet</field>-->
+      <!--<field name="model_id" ref="model_worksheet_mrp"/>-->
+      <!--<field name="domain_force">['|',('user_id','=',False),('user_id', '=', user.id)]</field>-->
+      <!--<field name="groups" eval="[(4, ref('group_real_estate_user'))]"/>-->
+    <!--</record>-->
+    <!--<record model="ir.rule" id="all_worksheet_rule">-->
+      <!--<field name="name">All Worksheet</field>-->
+      <!--<field name="model_id" ref="model_worksheet_mrp"/>-->
+      <!--<field name="domain_force">[(1, '=', 1)]</field>-->
+      <!--<field name="groups" eval="[(4, ref('group_real_estate_user_all_leads'))]"/>-->
+    </record>
+  </data>
+
+
+  <data noupdate="1">
+    <record id="base.default_user" model="res.users">
+      <field name="groups_id"
+             eval="[(4,ref('worksheet_mrp.group_worksheet_manager'))]"/>
+    </record>
+  </data>
+</odoo>

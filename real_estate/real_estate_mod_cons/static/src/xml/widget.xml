@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="template" xml:space="preserve">
+  <t t-name="Many2ManyCheckBoxesMultiCol">
+    <div class="container"><div aria-atomic="true" class="row">
+        <div t-foreach="widget.m2mValues" t-as="m2m_value"
+             class="col-xs-6 col-md-6 col-lg-4">
+            <t t-set="id_for_label"
+               t-value="'o_many2many_checkbox_' + _.uniqueId()"/>
+          <div class="custom-control custom-checkbox">
+                <input type="checkbox" t-att-id="id_for_label"
+                       class="custom-control-input"
+                       t-att-data-record-id="JSON.stringify(m2m_value[0])"/>
+            <label t-att-for="id_for_label"
+                   class="custom-control-label o_form_label"><t t-esc="m2m_value[1]"/></label>
+            </div>
+        </div>
+    </div></div>
+  </t>
+
+</template>

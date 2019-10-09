@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_contract_quota_report_pivot" model="ir.ui.view">
+      <field name="name">view_contract_quota_report_pivot</field>
+      <field name="model">real.estate.quota.details</field>
+      <field name="arch" type="xml">
+        <pivot string="Quota Analysis" disable_linking="True">
+          <field name="partner_id" type="row"/>
+          <field name="amount" type="measure"/>
+          <field name="amount_paid" type="measure"/>
+          <field name="residual" type="measure"/>
+        </pivot>
+      </field>
+    </record>
+
+    <record id="view_contract_quota_report_graph" model="ir.ui.view">
+      <field name="name">real.estate.quota.details.graph</field>
+      <field name="model">real.estate.quota.details</field>
+      <field name="arch" type="xml">
+        <graph string="Quota Analysis">
+          <field name="partner_id"/>
+          <field name="amount_paid" type="measure"/>
+          <!--<field name="date_payment" type="measure"/>-->
+        </graph>
+      </field>
+    </record>
+
+    <record id="view_contract_quota_report_dashboard" model="ir.ui.view">
+      <field name="name">real.estate.quota.details.dashboard</field>
+      <field name="model">real.estate.quota.details</field>
+      <field name="arch" type="xml">
+        <dashboard>
+          <view type="graph" ref="real_estate.view_contract_quota_report_graph"/>
+          <group>
+            <group>
+              <aggregate name="partner_id" string="Clientes"
+                         group_operator="count" field="partner_id" measure="__count__"/>
+              <aggregate name="actividad_economica" string="Actividad Economica"
+                         group_operator="count" field="actividad_economica"/>
+              <aggregate name="tipo_cliente" string="Cipo de CLientes"
+                         group_operator="count" field="tipo_cliente" />
+
+              <aggregate name="amount_paid" field="amount_paid"
+                         string="Cuotas Pagadas"/>
+
+              <!--<aggregate invisible="1" name="probability" field="probability"-->
+                         <!--group_operator="avg"/>-->
+              <!--<formula name="prorated_revenue" string="Prorated Revenue"-->
+                       <!--value="record.probability * record.expected_revenue_aggregate / 100"-->
+                       <!--widget="monetary"/>-->
+              <!--<aggregate name="days_to_assign" string="Days to Assign"-->
+                         <!--field="day_open" group_operator="avg" value_label="day(s)"/>-->
+              <!--<aggregate name="days_to_close" string="Days to Close"-->
+                         <!--field="day_close" group_operator="avg"-->
+                         <!--value_label="day(s)"/>-->
+              <!--<aggregate name="days_exceeding_closing" string="Exceeding Close Days"-->
+                         <!--field="days_exceeding_closing" group_operator="avg"/>-->
+            </group>
+            <group col="1">
+              <widget name="pie_chart" title="Actividad Economica" attrs="{'groupby': 'actividad_economica'}"/>
+              <!--<widget name="pie_chart" title="Medium"-->
+                      <!--attrs="{'groupby': 'medium_id'}"/>-->
+            </group>
+          </group>
+          <view type="pivot" ref="real_estate.view_contract_quota_report_pivot"/>
+        </dashboard>
+      </field>
+    </record>
+
+
+    <record id="view_contract_quota_report_search" model="ir.ui.view">
+      <field name="name">real.estate.quota.details.search</field>
+      <field name="model">real.estate.quota.details</field>
+      <field name="arch" type="xml">
+        <search string="Invoices Analysis">
+          <field name="date"/>
+          <field name="partner_id" operator="child_of"/>
+          <field name="property_amount"/>
+          <field name="tipo"/>
+          <field name="state"/>
+          <field name="date_due"/>
+          <field name="date_payment"/>
+          <field name="currency_id"/>
+          <field name="amount"/>
+          <field name="amount_paid"/>
+          <field name="residual"/>
+          <group expand="1" string="Group By">
+          <filter string="Actividad Economica" name='actividad_economica' context="{'group_by':'actividad_economica'}"/>
+          <filter string="Tipo Cliente" name='tipo_cliente' context="{'group_by':'tipo_cliente'}"/>
+          <!--<filter string="Partner" name="partner_id" context="{'group_by':'partner_id','residual_visible':True}"/>-->
+          <!--<filter string="Product Category" name="category_product" context="{'group_by':'categ_id','residual_invisible':True}"/>-->
+          <!--<filter string="Status" name="status" context="{'group_by':'state'}"/>-->
+          <!--<filter string="Analytic Account" name="account_analytic_id" context="{'group_by':'account_analytic_id'}" groups="analytic.group_analytic_accounting" />-->
+          <!--<filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>-->
+          <!--<separator orientation="vertical" />-->
+          <!--<filter string="Date" name="date" context="{'group_by':'date'}"/>-->
+          <!--<filter string="Due Date" name="duemonth" context="{'group_by':'date_due:month'}"/>-->
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record id="action_contract_quota_report_all_supp" model="ir.actions.act_window">
+      <field name="name">Analisis de Cuotas</field>
+      <field name="res_model">real.estate.quota.details</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">pivot,graph</field>
+      <!--<field name="context">{'search_default_current':1, 'search_default_supplier':1, 'group_by':[], 'group_by_no_leaf':1, 'search_default_year': 1}</field>-->
+      <field name="search_view_id" ref="view_contract_quota_report_search"/>
+      <!--<field name="help">From this report, you can have an overview of the amount invoiced from your vendors. The search tool can also be used to personalise your Invoices reports and so, match this analysis to your needs.</field>-->
+    </record>
+
+
+    <menuitem name="Informes" id="menu_informes" parent="menu_root" sequence="14"/>
+    <menuitem name="Cuotas" action="action_contract_quota_report_all_supp"
+              id="menu_action_contract_quota_report_all"
+              parent="menu_informes" sequence="1"/>
+
+  </data>
+</odoo>

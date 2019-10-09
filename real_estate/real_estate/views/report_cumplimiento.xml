@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <report
+      id="report_cumplimiento"
+      model="account.payment"
+      string="Report Cumplimiento"
+      report_type="qweb-pdf"
+      name="real_estate.cumplimiento"
+      file="real_estate.cumplimiento"
+      print_report_name="Report_de_Cumplimiento"
+  />
+
+  <report
+      id="report_cuadre_caja"
+      model="account.payment"
+      string="Report Cuadre de Caja"
+      report_type="qweb-pdf"
+      name="real_estate.cuadre_caja"
+      file="real_estate.cuadre_caja"
+      print_report_name="Report_de_Caja"
+  />
+
+
+  <template id="cumplimiento">
+    <t t-call="web.html_container">
+      <!--<t t-foreach="docs" t-as="o">-->
+      <t t-call="web.external_layout">
+        <div class="page">
+          <h2 class="text-center">Remision de Informacion</h2>
+
+          <strong>1. Volumen y Monto Trasado por Cantidad de Cliente.</strong>
+          <table class="table table-sm table-striped">
+            <tr>
+              <td>Cantidad de Transacciones</td>
+              <td class="text-right" t-esc="'{:,}'.format(cantidad)"/>
+            </tr>
+            <tr>
+              <td>Monto Total Envuento</td>
+              <td class="text-right" t-esc="'{:,.2f}'.format(total)"/>
+            </tr>
+          </table>
+          <table class="table table-sm table-striped">
+            <thead>
+              <th>Tipo de Cliente</th>
+              <th class="text-right">Cantidad</th>
+              <th class="text-right">Monto total envuento</th>
+            </thead>
+            <tbody>
+              <tr t-foreach="tipo" t-as="t">
+                <td>
+                  <span t-esc="t"/>
+                </td>
+                <td class="text-right">
+                  <span t-esc="t_value['cantidad']"/>
+                </td>
+                <td class="text-right">
+                  <span t-esc="'{:,.2f}'.format(t_value['monto'])"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <strong>2. Nacionalidades y Residencia del Cliente</strong>
+          <div class="row">
+            <div class="col-5">
+              <table class="table table-sm table-striped">
+                <tr>
+                  <td colspan="2" class="text-center">
+                    Nacionalidad de Clientes Fisico
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Nacionalidad</strong>
+                  </td>
+                  <td class="text-right">
+                    <strong>Cantidad</strong>
+                  </td>
+                </tr>
+                <tr t-foreach="nacionalidad" t-as="n">
+                  <td>
+                    <span t-esc="n"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="'{:,}'.format(n_value)"/>
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+            <div class="col-5">
+              <table class="table table-sm table-striped">
+                <tr>
+                  <td colspan="2" class="text-center">
+                    Pais Residencia
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Residencia</strong>
+                  </td>
+                  <td class="text-right">
+                    <strong>Cantidad</strong>
+                  </td>
+                </tr>
+                <tr t-foreach="residencia" t-as="r">
+                  <td>
+                    <span t-esc="r"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="'{:,}'.format(r_value)"/>
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+          <strong>3. Categoria de Riesgo por Cliente</strong>
+          <table class="table table-sm table-striped">
+            <thead>
+              <th>
+                <strong>Tipo de Riesgo</strong>
+              </th>
+              <th class="text-right">
+                <strong>Cantidad</strong>
+              </th>
+            </thead>
+            <tbody>
+              <tr t-foreach="categoria" t-as="c">
+                <td>
+                  <t t-esc="c"/>
+                </td>
+                <td class="text-right">
+                  <t t-esc="'{:,}'.format(c_value)"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <strong>4. Clasificacion por Actividad Economica</strong>
+          <table class="table table-sm table-striped">
+            <tbody>
+              <tr t-foreach="actividad" t-as="a">
+                <td>
+                  <t t-esc="a"/>
+                </td>
+                <td class="text-right">
+                  <t t-esc="'{:,}'.format(a_value)"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="page-break-before:always;"></p>
+          <table class="table table-sm" style="font-size: x-small;">
+            <tr colspan="11" class="text-center">
+              <h4>Listado de Pagos</h4>
+            </tr>
+            <tr>
+              <th>Cliente</th>
+              <th>Actividad Economica</th>
+              <th>Tipo Cliente</th>
+              <th>calificaion_riesgo</th>
+              <th>Nacionalidad</th>
+              <th>Residencia</th>
+              <th>Fecha</th>
+              <th>Secuencia</th>
+              <th>Diario/Caja</th>
+              <th>Monto</th>
+              <th>Moneda</th>
+            </tr>
+            <tbody>
+              <tr t-foreach="pagos" t-as="pago">
+                <td>
+                  <span t-esc="pago.partner_id.name"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.actividad_economica"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.tipo_cliente"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.calificacion_riesgo"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.nacionalidad_id.name"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.residencia_id.name"/>
+                </td>
+
+                <td>
+                  <span t-esc="pago.payment_date"/>
+                </td>
+                <td>
+                  <span t-esc="pago.name"/>
+                </td>
+                <td>
+                  <span t-esc="pago.journal_id.name"/>
+                </td>
+                <td>
+                  <span t-esc="'{:,.2f}'.format(pago.amount)"/>
+                </td>
+                <td>
+                  <span t-esc="pago.currency_id.name"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </t>
+      <!--</t>-->
+    </t>
+  </template>
+
+  <template id="cuadre_caja">
+    <t t-call="web.html_container">
+      <!--<t t-foreach="docs" t-as="o">-->
+      <t t-call="web.internal_layout">
+        <div class="page">
+          <h2 class="text-center">Cuadre de Caja</h2>
+          <table class="table table-sm">
+            <tjead>
+              <th>Modena</th>
+              <th class="text-right">Cantidad</th>
+              <th class="text-right">Total</th>
+            </tjead>
+            <tr t-foreach="resume" t-as="r">
+              <td>
+                <span t-esc="r_value['currency']"/>
+              </td>
+              <td class="text-right">
+                <span t-esc="'{:,}'.format(r_value['cnt'])"/>
+              </td>
+              <td class="text-right">
+                <span t-esc="'{:,.2f}'.format(r_value['total'])"/>
+              </td>
+            </tr>
+          </table>
+
+          <hr/>
+
+          <table class="table table-sm" style="font-size: x-small;">
+            <tr colspan="11" class="text-center">
+              <h4>Listado de Pagos</h4>
+            </tr>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Secuencia</th>
+              <th>Diario/Caja</th>
+              <th>Monto</th>
+              <th>Moneda</th>
+            </tr>
+            <tbody>
+              <t t-set="n" t-value="0"/>
+              <tr t-foreach="pagos" t-as="pago">
+                <t t-set="n" t-value="n+1"/>
+                <td>
+                  <span t-esc="n"/>
+                </td>
+                <td>
+                  <span t-esc="pago.partner_id.name"/>
+                </td>
+
+                <td>
+                  <span t-esc="pago.payment_date"/>
+                </td>
+                <td>
+                  <span t-esc="pago.name"/>
+                </td>
+                <td>
+                  <span t-esc="pago.journal_id.name"/>
+                </td>
+                <td>
+                  <span t-esc="'{:,.2f}'.format(pago.amount)"/>
+                </td>
+                <td>
+                  <span t-esc="pago.currency_id.name"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br/>
+          <br/>
+          <table>
+            <tr>
+              <td style="padding-right: 4em;">_______________________________</td>
+              <td>_______________________________</td>
+            </tr>
+            <tr class="text-center">
+              <td style="padding-right: 4em;">Realizado por</td>
+              <td>Revisado por</td>
+            </tr>
+          </table>
+        </div>
+      </t>
+      <!--</t>-->
+    </t>
+  </template>
+
+</odoo>

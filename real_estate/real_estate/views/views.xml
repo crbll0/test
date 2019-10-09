@@ -1,0 +1,521 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="project_list_view">
+      <field name="name">project</field>
+      <field name="model">real.estate.project</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="etapa"/>
+          <field name="property_ids"/>
+          <field name="count_property_available"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="project_form_view">
+      <field name="name">Projeect</field>
+      <field name="model">real.estate.project</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button class="oe_stat_button" name="action_open_properties"
+                      icon="fa-building-o" type="object">
+                <span class="o_stat_value">
+                  <field name="count_property_available"/>/
+                  <field name="count_property"/>
+                </span>
+                <span class="o_stat_text">Propiedades Disponibles</span>
+              </button>
+            </div>
+
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h2>
+                <field name="name"/>
+              </h2>
+              <field name="etapa" placeholder="Etapa del Proyecto: Eje. Etapa 1"/>
+            </div>
+            <group>
+              <label for="street" string="Address"/>
+              <div class="o_address_format">
+                <field name="street" placeholder="Street..."
+                       class="o_address_street"/>
+                <field name="street2" placeholder="Street 2..."
+                       class="o_address_street"/>
+                <field name="city" placeholder="City" class="o_address_city"/>
+                <field name="state_id" class="o_address_state" placeholder="State"
+                       options="{&quot;no_open&quot;: True}"
+                       context="{'country_id': country_id}"/>
+                <field name="country_id" placeholder="Country"
+                       class="o_address_country"
+                       options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+              </div>
+              <newline/>
+			<field name="company_id" groups="base.group_multi_company"/>
+            </group>
+            <notebook>
+              <page string="Notes/Description">
+
+                <field name="description" widget="html"
+                       placeholder="Descripcion...."/>
+              </page>
+              <page string="Datos del Terreno">
+	             <group>
+                  <field name="designacion_catastral"/>
+                  <field name="matricula"/>
+                  <field name="metraje"/>
+                 </group>
+              </page>
+              <page string="Propiedades" invisible="1">
+                <field name="property_ids" nolabel="1" readonly="1"/>
+
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record model="ir.actions.act_window" id="project_action_window">
+      <field name="name">Projectos</field>
+      <field name="res_model">real.estate.project</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="property_list_view">
+      <field name="name">Property</field>
+      <field name="model">real.estate.property</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="code"/>
+          <field name="property_type"/>
+          <field name="name"/>
+          <field name="amount"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="property_form_view">
+      <field name="name">Property</field>
+      <field name="model">real.estate.property</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h2>
+                <field name="name"/>
+              </h2>
+              <div class="oe_row">
+                <field name="code" readonly="1"/>
+                -
+                <field name="property_type" placeholder="Property Type"
+                       options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+              </div>
+            </div>
+            <group>
+              <group>
+                <label for="street" string="Address"/>
+                <div class="o_address_format">
+                  <field name="street" placeholder="Street..."
+                         class="o_address_street"/>
+                  <field name="street2" placeholder="Street 2..."
+                         class="o_address_street"/>
+                  <field name="city" placeholder="City" class="o_address_city"/>
+                  <field name="state_id" class="o_address_state" placeholder="State"
+                         options="{&quot;no_open&quot;: True}"
+                         context="{'country_id': country_id}"/>
+                  <field name="country_id" placeholder="Country"
+                         class="o_address_country"
+                         options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                </div>
+                <newline/>
+
+                <label for="amount"/>
+                <div class="oe_row">
+                  <field name="amount"/>
+                  <field name="currency_id" class="oe_edit_only"
+                         options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                </div>
+                <field name="separacion"/>
+				<field name="company_id" groups="base.group_multi_company"/>
+              </group>
+              <group>
+                <field name="project_id" domain="[('company_id', '=', company_id)]"/>
+                <field name="edificio"/>
+                <field name="apto"/>
+                <field name="mt2"/>
+                <field name="floor"/>
+                <field name="rooms"/>
+                <field name="bathrooms"/>
+                <field name="parking"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="Notes/Description">
+                <group>
+                  <table class="table table-sm">
+                    <tr>
+                      <th>Matricula</th>
+                      <td><field name="titulo_matricula"/></td>
+                      <th>Libro</th>
+                      <td><field name="titulo_libro"/></td>
+                      <th>Folio</th>
+                      <td><field name="titulo_folio"/></td>
+                      <th>Fecha</th>
+                      <td><field name="titulo_fecha"/></td>
+                    </tr>
+                  </table>
+                </group>
+                <field name="description" placeholder="Property Description...." widget="html"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="property_search_view">
+      <field name="name">Property Seach</field>
+      <field name="model">real.estate.property</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="property_type"/>
+
+          <separator/>
+          <filter name="available" string="Available"
+                  domain="[('state','=','available')]"/>
+          <filter name="reserved" string="Reserved"
+                  domain="[('state', '=', 'reserved')]"/>
+          <filter name="sold" string="Sold" domain="[('state', '=', 'sold')]"/>
+
+          <group expand="0" string="Group By">
+            <filter name="group_by_type" string="Type"
+                    context="{'group_by':'property_type'}"/>
+            <filter name="status" string="Status" context="{'group_by':'state'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="property_action_window">
+      <field name="name">Property</field>
+      <field name="res_model">real.estate.property</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{"search_default_available":1}</field>
+      <field name="search_view_id" ref="property_search_view"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Create a new Property
+        </p>
+        <p>
+        </p>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="contract_list_view">
+      <field name="name">Contract</field>
+      <field name="model">real.estate.contract</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="partner_id"/>
+          <field name="property_id"/>
+          <field name="property_amount"/>
+          <field name="property_currency_id"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="contract_form_view">
+      <field name="name">Contract</field>
+      <field name="model">real.estate.contract</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="action_validate" string="Confirm" type="object"
+                    states="draft" class="" groups='real_estate.group_manager'/>
+            <button name="action_cancel" string="Cancel" type="object"
+                    states="validate" class="" groups='real_estate.group_manager'/>
+
+            <field name="state" widget="statusbar"
+                   statusbar_visible="draft,validate,done"/>
+
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button class="oe_stat_button" name="%(lauch_wizard_payment)d"
+                      icon="fa-money" type="action" string="Crear Pago"
+                      attrs="{'invisible': [('state', '!=', 'validate')]}"/>
+
+              <!--<button class="oe_stat_button" name="action_open_invoices"-->
+              <!--icon="fa-bars" type="object" string="Invoices"/>-->
+            </div>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" string="Contract"/>
+              <h2>
+                <field name="name"/>
+              </h2>
+            </div>
+
+            <group>
+              <group>
+                <field name="partner_id" required="1"
+                       domain="[('customer', '=', True)]"/>
+                <field name="partner2_id"
+                       domain="[('customer', '=', True)]"/>
+                <field name="property_id" required="1"
+                       domain="[('state', '=', 'available')]"/>
+
+                <label for="property_amount"/>
+                <div name="amount_div" class="o_row">
+                  <field name="property_amount"/>
+                  <field name="property_currency_id"
+                         options="{'no_create': True, 'no_open': True}"
+                         groups="base.group_multi_currency"/>
+                </div>
+                <field name="separacion"/>
+                <field name="date_done" required="1"/>
+				<field name="company_id" groups="base.group_multi_company"/>
+
+              </group>
+              <group>
+
+                <field name="date" required="1"/>
+                <newline/>
+                <field name="tipo" required="1"/>
+                <field name="advance" required="1"/>
+
+                <newline/>
+
+                <field name="date_start"/>
+                <label for="num_payments"/>
+                <div class="oe_row">
+                  <field name="num_payments"/>
+                  <button name="get_quota" type="object"
+                          class="btn-link oe_edit_only" states="draft">
+                    <i title="Get Quota" role="img" aria-label="Get Quota"
+                       class="fa fa-fw fa-refresh"/>
+                  </button>
+                </div>
+                <field name="remaining"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="Quota">
+                <field name="quota_ids">
+                  <tree>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="date_due" readonly="1"/>
+                    <field name="payment_id" invisible="1"/>
+                    <field name="amount" sum="Total"/>
+                    <field name="amount_paid" sum="Total Paid" readonly="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="residual" sum="Amount Due" readonly="1"/>
+                    <field name="date_payment" sum="Date Payment" readonly="1" invisible="1"/>
+                  </tree>
+                </field>
+              </page>
+              <page string="Otra Informacion">
+                <group>
+                  <group>
+                    <field name="vendedor_id"/>
+                    <field name="representante_id"/>
+                  </group>
+                  <group>
+                    <field name="journal_id" required="1"
+                           domain="[('type','in',['cash','bank'])]"/>
+                    <field name="invoice_nc"/>
+                    <field name="lead_id"/>
+                  </group>
+                </group>
+
+              </page>
+            </notebook>
+          </sheet>
+
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="contract_kanban_view">
+      <field name="name">Property Contract</field>
+      <field name="model">real.estate.contract</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="state" quick_create="false"
+                class="o_kanban_mobile o_kanban_small_column">
+
+          <field name="state"/>
+
+          <field name="partner_id"/>
+          <field name="property_amount"/>
+          <field name="property_currency_id"/>
+          <field name="len_cuotas"/>
+          <field name="payment_done" string="Payments"/>
+          <field name="payment_month"/>
+          <field name="date_start"/>
+
+
+          <templates read_only_mode="1">
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                <div class="o_kanban_record_top">
+                  <div class="o_kanban_record_headings">
+                    <strong class="o_kanban_record_title">
+                      <span>
+                        <field name="partner_id"/>
+                      </span>
+                    </strong>
+                  </div>
+
+                  <strong>
+                    <field name="property_amount" widget="monetary"/>
+                  </strong>
+                </div>
+
+                <div class="oe_kanban_details">
+                  <ul>
+                    <li>
+                      <field name="payment_done" widget="gauge" string="Pagos"
+                             style="width:80px; height: 30px; cursor: pointer;"
+                             options="{'max_field': 'len_cuotas', 'string': 'Payments'}"/>
+
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="o_kanban_record_bottom">
+                  <div class="oe_kanban_bottom_left text-primary">
+                    <strong>Monto Cuotas:
+                      <field name="payment_month" widget="monetary"/>
+                    </strong>
+                  </div>
+                  <div class="oe_kanban_bottom_right text-primary">
+                    <span>
+                      <strong>Saldo Restante:
+                        <field name="remaining" widget="monetary"/>
+                      </strong>
+
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="contract_search_view">
+      <field name="name">contract Seach</field>
+      <field name="model">real.estate.contract</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="partner_id"/>
+          <!--<field name="property_type"/>-->
+
+          <separator/>
+          <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+          <filter name="validate" string="Validate"
+                  domain="[('state', '=', 'validate')]"/>
+          <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+
+          <group expand="0" string="Group By">
+            <filter name="group_by_partner_id" string="Partner"
+                    context="{'group_by':'partner_id'}"/>
+            <filter name="status" string="Status" context="{'group_by':'state'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="contract_action_window">
+      <field name="name">Contract</field>
+      <field name="res_model">real.estate.contract</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{"search_default_validate":1}</field>
+      <field name="search_view_id" ref="contract_search_view"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Crea un nuevo Contrato de Propiedades.
+        </p>
+        <p>
+        </p>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="property_type_tree_view">
+      <field name="name">Property Type</field>
+      <field name="model">real.estate.property.type</field>
+      <field name="arch" type="xml">
+        <tree string="Property Type" editable="bottom">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.actions.act_window" id="property_type_action_window">
+      <field name="name">Property Type</field>
+      <field name="res_model">real.estate.property.type</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="res_partner_action_window">
+      <field name="name">Partners</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="stage_form_view">
+      <field name="name">Sstage</field>
+      <field name="model">real.estate.contract.stage</field>
+      <field name="arch" type="xml">
+        <tree editable="bottom">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.actions.act_window" id="stage_action_window">
+      <field name="name">Stage</field>
+      <field name="res_model">real.estate.contract.stage</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+    <!-- MENU -->
+    <menuitem name="Real Estate" id="menu_root" sequence="10"
+              web_icon="real_estate,static/description/icon.png"/>
+
+    <menuitem name="Real Estate" id="menu_real_estate" parent="menu_root"/>
+    <menuitem name="Contracts" id="menu_contract" parent="menu_real_estate"
+              action="contract_action_window" sequence="10"/>
+    <menuitem name="Customer" id="menu_res_partner" parent="menu_real_estate"
+              action="res_partner_action_window" sequence="11"/>
+    <menuitem name="Projectos" id="menu_project" parent="menu_real_estate"
+              action="project_action_window" sequence="12"/>
+
+    <menuitem name="Properties" id="menu_property" parent="menu_real_estate"
+              action="property_action_window" sequence="13"/>
+
+    <menuitem name="Configuration" id="menu_configuration" parent="menu_root"
+              sequence="15"/>
+    <menuitem name="Property Type" id="menu_property_type"
+              parent="menu_configuration"
+              action="property_type_action_window"/>
+
+  </data>
+</odoo>

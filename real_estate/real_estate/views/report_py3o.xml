@@ -1,0 +1,163 @@
+<odoo>
+
+  <record id="docier_template_py3o" model="py3o.template">
+    <field name="name">Docier</field>
+    <field name="filetype">ods</field>
+  </record>
+
+  <record id="documentacion_report_py3o" model="ir.actions.report">
+    <field name="name">Docier</field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_docier</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">ods</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="docier_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.ods
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <record id="sindevolucion_template_py3o" model="py3o.template">
+    <field name="name">Acto de Desistimiento Unilateral Sin Devolucion de Valores
+    </field>
+    <field name="filetype">odt</field>
+  </record>
+
+  <record id="sindevolucion_report_py3o" model="ir.actions.report">
+    <field name="name">Acto de Desistimiento Unilateral Sin Devolucion de Valores
+    </field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_sindevolucion</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="sindevolucion_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <record id="condevolucion_template_py3o" model="py3o.template">
+    <field name="name">Acto de Desistimiento Unilateral Con Devolucion de Valores
+    </field>
+    <field name="filetype">odt</field>
+
+  </record>
+
+  <record id="condevolucion_report_py3o" model="ir.actions.report">
+    <field name="name">Acto de Desistimiento Unilateral Con Devolucion de Valores
+    </field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_condevolucion</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="condevolucion_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <record id="cambio_titular_template_py3o" model="py3o.template">
+    <field name="name">Desistimiento por Cambio de Titular</field>
+    <field name="filetype">odt</field>
+  </record>
+
+  <record id="cambio_titular_report_py3o" model="ir.actions.report">
+    <field name="name">Desistimiento por Cambio de Titular</field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_cambiotitular</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="cambio_titular_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <!--Contratos Promesa-->
+
+  <record id="ct_promesa_template_py3o" model="py3o.template">
+    <field name="name">Contrato Promesa de Venta</field>
+    <field name="filetype">odt</field>
+  </record>
+
+  <record id="ct_promesa_report_py3o" model="ir.actions.report">
+    <field name="name">Contrato Promesa de Venta</field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_ct_promesa</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="ct_promesa_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <record id="ct_promesa_fideicomiso_template_py3o" model="py3o.template">
+    <field name="name">Contrato Promesa de Venta (Fideicomiso)</field>
+    <field name="filetype">odt</field>
+  </record>
+
+  <record id="ct_promesa_fideicomiso_report_py3o" model="ir.actions.report">
+    <field name="name">Contrato Promesa de Venta (Fideicomiso)</field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_ct_promesa_fideicomiso</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="ct_promesa_fideicomiso_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+
+  <record id="ct_venta_template_py3o" model="py3o.template">
+    <field name="name">Contrato de Venta Definitivo</field>
+    <field name="filetype">odt</field>
+  </record>
+
+  <record id="ct_venta_report_py3o" model="ir.actions.report">
+    <field name="name">Contrato de Venta Definitivo</field>
+    <field name="type">ir.actions.report</field>
+    <field name="model">real.estate.contract</field>
+    <field name="report_name">real_estate_ct_venta</field>
+    <field name="report_type">py3o</field>
+    <field name="py3o_filetype">odt</field>
+    <field name="module">real_estate</field>
+    <field name="py3o_template_id" ref="ct_venta_template_py3o"/>
+    <field name="py3o_template_fallback">
+      /report/real_estate_checklist_auditoria_cumplimiento2.odt
+    </field>
+    <field name="binding_model_id" ref="real_estate.model_real_estate_contract"/>
+    <field name="binding_type">report</field>
+  </record>
+
+</odoo>

@@ -1,0 +1,137 @@
+<odoo>
+  <report
+      id="report_estado_cliente"
+      model="real.estate.contract"
+      string="Estado del Cliente"
+      report_type="qweb-pdf"
+      name="real_estate.estado_cliente"
+      file="real_estate.estado_cliente"
+      print_report_name="'Estado del Cliente - %s' % (object.partner_id.name)"
+  />
+  <template id="estado_cliente">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+        <t t-call="web.external_layout">
+          <div class="page">
+            <h2 class="text-center">Estado del Cliente</h2>
+
+            <div class="row">
+                <div class="col-7 ">
+                  <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "vat"], "no_marker": False}' />
+                    <span>
+                        <strong>2do Contacto:</strong>
+                        <span t-field="o.partner2_id.name" />
+                    </span>
+                </div>
+                <div class="col-5">
+                  <span>
+                    <strong>Ref:</strong>
+                    <span t-field="o.name"/>
+                  </span><br/>
+                  <span>
+                    <strong>Proyecto:</strong>
+                    <span t-field="o.property_id.project_id.name"/>
+                  </span>
+                  <br/>                  <span>
+                    <strong>Etapa:</strong>
+                    <span t-field="o.property_id.project_id.etapa"/>
+                  </span>
+                  <br/>                  <span>
+                    <strong>Precio Apto:</strong>
+                    <span t-field="o.property_amount"
+                      t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.property_currency_id}"/>
+                  </span>
+                  <br/>                  <span>
+                    <strong>Cnt. Cuota:</strong>
+                    <span t-field="o.num_payments"/>
+                  </span>
+                  <br/>                  <span>
+                    <strong>Mora:</strong>
+                  <span>5%</span>
+                  </span>
+                  <br/>
+                  <div>
+                    <table class="table table-sm">
+                      <tr>
+                        <td>
+                          <strong>Edificio:</strong>
+                          <span t-esc="o.property_id.edificio"/>
+                        </td>
+                        <td>
+                          <strong>Apto:</strong>
+                          <span t-esc="o.property_id.apto"/>
+                        </td>
+                        <td>
+                          <strong>Mts:</strong>
+                          <span t-esc="o.property_id.mt2"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+            </div>
+
+            <table class="table table-sm mt32">
+              <tr class="bg-dark">
+                <td colspan="5"><h4 class="text-center">Datos Cuotas/Plan de Pagos</h4></td>
+              </tr>
+              <!--<thead>-->
+                <tr>
+                  <th>Cuota/Descripcion</th>
+                  <th>Fecha Vencimiento</th>
+                  <th class="text-right">Monto Cuota</th>
+                  <th class="text-right">Monto Pagado</th>
+                  <th class="text-right">Residual</th>
+                </tr>
+              <!--</thead>-->
+              <!--<tbody>-->
+                <t t-set="total_amount" t-value="0"/>
+                <t t-set="total_paid" t-value="0"/>
+                <t t-set="total_residual" t-value="0"/>
+                <t t-foreach="o.quota_ids" t-as="c">
+                  <tr>
+                    <td>
+                      <span t-field="c.name"/>
+                    </td>
+                    <td>
+                      <span t-field="c.date_due"/>
+                    </td>
+                    <td class="text-right">
+                      <span t-field="c.amount"/>
+                      <t t-set="total_amount" t-value="total_amount+c.amount"/>
+
+                    </td>
+                    <td class="text-right">
+                      <span t-field="c.amount_paid"/>
+                      <t t-set="total_paid" t-value="total_paid+c.amount_paid"/>
+                    </td>
+                    <td class="text-right">
+                      <span t-field="c.residual"/>
+                      <t t-set="total_residual" t-value="total_residual+c.residual"/>
+                    </td>
+                  </tr>
+                </t>
+                <tr>
+                    <td colspan="2" class="text-right">
+                      <strong>Totales</strong>
+                    </td>
+                    <td class="text-right">
+                      <span t-esc="'{:,.2f}'.format(total_amount)"/>
+                    </td>
+                    <td class="text-right">
+                      <span t-esc="'{:,.2f}'.format(total_paid)"/>
+                    </td>
+                    <td class="text-right">
+                      <span t-esc="'{:,.2f}'.format(total_residual)"/>
+                    </td>
+
+                </tr>
+              <!--</tbody>-->
+            </table>
+          </div>
+        </t>
+      </t>
+    </t>
+  </template>
+
+</odoo>

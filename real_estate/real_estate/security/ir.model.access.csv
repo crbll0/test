@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_property,real.estate.property,model_real_estate_property,real_estate.group_user,1,1,1,0
+access_project,real.estate.project,model_real_estate_project,real_estate.group_user,1,1,1,0
+access_contract,real.estate.contract,model_real_estate_contract,real_estate.group_user,1,1,1,0
+access_contract_quota,real.estate.contract.quota,model_real_estate_contract_quota,real_estate.group_user,1,1,1,1
+access_contract_stage,real.estate.contract.stage,model_real_estate_contract_stage,real_estate.group_user,1,1,1,0
+access_quota_details,real.estate.quota.details,model_real_estate_quota_details,real_estate.group_user,1,1,1,0
+access_property_type,real.estate.property.type,model_real_estate_property_type,real_estate.group_user,1,1,1,0
+access_property_manager,real.estate.property,model_real_estate_property,real_estate.group_manager,1,1,1,1
+access_project_manager,real.estate.project,model_real_estate_project,real_estate.group_manager,1,1,1,1
+access_contract_manager,real.estate.contract,model_real_estate_contract,real_estate.group_manager,1,1,1,1
+access_contract_quota_manager,real.estate.contract.quota,model_real_estate_contract_quota,real_estate.group_manager,1,1,1,1
+access_contract_stage_manager,real.estate.contract.stage,model_real_estate_contract_stage,real_estate.group_manager,1,1,1,1
+access_quota_details_manager,real.estate.quota.details,model_real_estate_quota_details,real_estate.group_manager,1,1,1,1
+access_property_type_manager,real.estate.property.type,model_real_estate_property_type,real_estate.group_manager,1,1,1,1
+access_pagos,payment.quota,model_payment_quota,real_estate.group_user_cash,1,1,1,1
+access_pagos_line,payment.quota.line,model_payment_quota_line,real_estate.group_user_cash,1,1,1,1
